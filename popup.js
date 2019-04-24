@@ -5,9 +5,10 @@ chrome.tabs.query({active: true, currentWindow: true}, tabs => {
     chrome.tabs.sendMessage(
       tabs[0].id,
       'makeTOC',
-      (text) => {
-      copyToClipboard(text);
-    });
+      text => {
+        copyToClipboard(text);
+      }
+    );
   } else {
     const message = document.getElementById('message')
     message.textContent = 'This page is not a Databricks notebook';
