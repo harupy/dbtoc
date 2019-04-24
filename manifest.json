@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "dbtoc",
+    "version": "1.0",
+    "description": "Make a table of contents",
+    "icons": {
+        "48": "logo.png"
+    },
+    "browser_action": {
+        "default_title": "dbtoc",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [{
+        "matches": ["https://*.databricks.com/*"],
+        "js": ["contentscript.js"]
+    }],
+    "permissions": [
+        "tabs"
+    ]
+}
