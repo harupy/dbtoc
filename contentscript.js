@@ -1,8 +1,3 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const TOC = makeTOC();
-  sendResponse(TOC);
-});
-
 const getHeaderLevel = h => {
   return parseInt(h.slice(1));
 };
@@ -27,22 +22,57 @@ const getCellHref = cell => {
   return cell.querySelector('a.command-number').getAttribute('href');
 };
 
+const makeSectionLink = (mdCell, topHeaderLevel) => {
+  const cellHref = getCellHref(mdCell);
+  const header = getHeaders(mdCell)[0];
+  const headerLevel = getHeaderLevel(header.tagName);
+  const indent = '  '.repeat(headerLevel - topHeaderLevel);
+  const sectionLink = `${indent}- [${header.textContent}](${cellHref})`;
+  return sectionLink;
+}
 
 const makeTOC = () => {
   const cells = document.querySelectorAll('div.command-with-number');
-  const markdownCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c)).slice(1);
-  const topHeader = getHeaders(markdownCells[0])[0];
+  const mdCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c)).slice(1);
+  const topHeader = getHeaders(mdCells[0])[0];
   const topHeaderLevel = getHeaderLevel(topHeader.tagName);
-  const sections = [];
+  const sectionLinks = mdCells.map(mdCell => makeSectionLink(mdCell, topHeaderLevel));
+  return sectionLinks.join('\n');
+};
 
-  markdownCells.forEach(markdownCell => {
-    const cellHref = getCellHref(markdownCell);
-    const header = getHeaders(markdownCell)[0];
-    const headerLevel = getHeaderLevel(header.tagName);
-    const indent = '  '.repeat(headerLevel - topHeaderLevel);
-    const section = `${indent}- [${header.textContent}](${cellHref})`;
-    sections.push(section);
-    }
-  );
-  return sections.join('\n');
+const getCellByHref = href => {
+  return document.querySelectorAll(`a[href='${href}'].command-number`)[0];
 }
+
+const updateTOC = () => {
+  const topMarkdownCell = document.querySelector('div.markdown');
+  const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
+  sectionLinks.forEach(sectionLink => {
+    sectionLink.addEventListener('click', event => {
+      event.preventDefault();
+      const href = event.target.getAttribute('href');
+      const targetCell = getCellByHref(href);
+      targetCell.scrollIntoView();
+    });
+  });
+};
+
+const waitUntilLoaded = func => {
+  return () => {
+    const callback = () => {
+      if (document.querySelector('div.markdown') !== null) {
+        clearInterval(handle);
+        func();
+      }
+    }
+    const handle = setInterval(callback, 100);
+  };
+};
+
+window.addEventListener('load', waitUntilLoaded(updateTOC), false);
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  const TOC = makeTOC();
+  sendResponse(TOC);
+});
+
