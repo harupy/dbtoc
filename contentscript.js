@@ -53,10 +53,10 @@ const enableScroll = () => {
   const topMarkdownCell = document.querySelector('div.markdown');
   const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
   sectionLinks.forEach(sectionLink => {
+    sectionLink.style.color = 'red';
     sectionLink.addEventListener('click', event => {
       event.preventDefault();
       const anchor = event.target;
-      anchor.style.color = 'red';
       const href = anchor.getAttribute('href');
       const targetCell = getCellByHref(href);
       targetCell.scrollIntoView();
