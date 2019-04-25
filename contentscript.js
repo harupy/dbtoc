@@ -1,27 +1,49 @@
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const toc = makeTOC();
-  sendResponse(toc);
+  const TOC = makeTOC();
+  sendResponse(TOC);
 });
+
+const getHeaderLevel = h => {
+  return parseInt(h.slice(1));
+};
+
+const getMarkdownDiv = cell => {
+  return cell.querySelector('div.markdown');
+};
+
+const isMarkdownCell = cell => {
+  return getMarkdownDiv(cell) !== null;
+};
+
+const getHeaders = cell => {
+  return getMarkdownDiv(cell).querySelectorAll('h1, h2, h3, h4, h5, h6');
+};
+
+const hasHeader = cell => {
+  return getHeaders(cell).length > 0;
+};
+
+const getCellHref = cell => {
+  return cell.querySelector('a.command-number').getAttribute('href');
+};
 
 
 const makeTOC = () => {
-  const cellDivs = document.querySelectorAll('div.command-with-number');
+  const cells = document.querySelectorAll('div.command-with-number');
+  const markdownCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c)).slice(1);
+  const topHeader = getHeaders(markdownCells[0])[0];
+  const topHeaderLevel = getHeaderLevel(topHeader.tagName);
   const sections = [];
-  cellDivs.forEach(cellDiv => {
-    var markdownDiv = cellDiv.querySelector('div.markdown');
-    if (markdownDiv) {
-      const cellHref = cellDiv.querySelector('a.command-number').getAttribute('href');
-      const headers = markdownDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      if (headers.length > 0) {
-        const section = `- [${headers[0].textContent}](${cellHref})`;
-        sections.push(section);
-      }
+
+  markdownCells.forEach(markdownCell => {
+    const cellHref = getCellHref(markdownCell);
+    const header = getHeaders(markdownCell)[0];
+    const headerLevel = getHeaderLevel(header.tagName);
+    const indent = '  '.repeat(headerLevel - topHeaderLevel);
+    const section = `${indent}- [${header.textContent}](${cellHref})`;
+    sections.push(section);
     }
-  });
+  );
   return sections.join('\n');
 }
-
-
-
-
