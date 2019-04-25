@@ -1,4 +1,3 @@
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const TOC = makeTOC();
   sendResponse(TOC);
