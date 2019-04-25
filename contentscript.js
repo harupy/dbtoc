@@ -53,7 +53,6 @@ const enableScroll = () => {
   const topMarkdownCell = document.querySelector('div.markdown');
   const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
   sectionLinks.forEach(sectionLink => {
-    sectionLink.style.color = 'red';
     sectionLink.addEventListener('click', event => {
       event.preventDefault();
       const anchor = event.target;
@@ -63,7 +62,6 @@ const enableScroll = () => {
     });
   });
 };
-
 
 const waitUntil = (condtionFunc, funcToExecute) => {
   return () => {
