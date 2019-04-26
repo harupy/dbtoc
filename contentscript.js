@@ -48,25 +48,25 @@ const mdCellExists = () => {
   return document.querySelector('div.markdown') !== null;
 }
 
-const enableScroll = () => {
+const enableScrollToSection = () => {
   if (!mdCellExists()) return
   const topMarkdownCell = document.querySelector('div.markdown');
   const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
   sectionLinks.forEach(sectionLink => {
+    sectionLink.style.fontWeight = 'bold';
     sectionLink.addEventListener('click', event => {
       event.preventDefault();
-      const anchor = event.target;
-      const href = anchor.getAttribute('href');
+      const href = event.target.getAttribute('href');
       const targetCell = getCellByHref(href);
       targetCell.scrollIntoView();
     });
   });
 };
 
-const waitUntil = (condtionFunc, funcToExecute) => {
+const waitFor = (conditionFunc, funcToExecute) => {
   return () => {
     const callback = () => {
-      if (condtionFunc()) {
+      if (conditionFunc()) {
         clearInterval(handle);
         funcToExecute();
       }
@@ -75,10 +75,9 @@ const waitUntil = (condtionFunc, funcToExecute) => {
   };
 };
 
-window.addEventListener('load', waitUntil(mdCellExists, enableScroll), false);
-document.addEventListener('mousedown', enableScroll, false);
+window.addEventListener('load', waitFor(mdCellExists, enableScrollToSection));
+document.addEventListener('mousedown', enableScrollToSection);
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  const TOC = makeTOC();
-  sendResponse(TOC);
+  sendResponse(makeTOC());
 });
 
