@@ -26,7 +26,8 @@ const makeSectionLink = (mdCell, topHeaderLevel) => {
   const cellHref = getCellHref(mdCell);
   const header = getHeaders(mdCell)[0];
   const headerLevel = getHeaderLevel(header.tagName);
-  const indent = '  '.repeat(headerLevel - topHeaderLevel);
+  const numIndent = Math.max(0, headerLevel - topHeaderLevel);
+  const indent = '  '.repeat(numIndent);
   const sectionLink = `${indent}- [${header.textContent}](${cellHref})`;
   return sectionLink;
 }
