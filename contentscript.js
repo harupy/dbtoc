@@ -22,23 +22,30 @@ const getCellHref = cell => {
   return cell.querySelector('a.command-number').getAttribute('href');
 };
 
-const makeSectionLink = (mdCell, topHeaderLevel) => {
-  const cellHref = getCellHref(mdCell);
+const getSection = (mdCell) => {
+  const href = getCellHref(mdCell);
   const header = getHeaders(mdCell)[0];
-  const headerLevel = getHeaderLevel(header.tagName);
-  const numIndent = Math.max(0, headerLevel - topHeaderLevel);
-  const indent = '  '.repeat(numIndent);
-  const sectionLink = `${indent}- [${header.textContent}](${cellHref})`;
-  return sectionLink;
+  const level = getHeaderLevel(header.tagName);
+  const text = header.textContent;
+  return {
+    level,
+    text,
+    href
+  }
+}
+
+const makeListItem = ({level, text, href}, topHeaderLevel) => {
+  const indent = '  '.repeat(level - topHeaderLevel);
+  return `${indent}- [${text}](${href})`
 }
 
 const makeTOC = () => {
   const cells = document.querySelectorAll('div.command-with-number');
   const mdCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c)).slice(1);
-  const topHeader = getHeaders(mdCells[0])[0];
-  const topHeaderLevel = getHeaderLevel(topHeader.tagName);
-  const sectionLinks = mdCells.map(mdCell => makeSectionLink(mdCell, topHeaderLevel));
-  return sectionLinks.join('\n');
+  const sections = mdCells.map(getSection);
+  const topHeaderLevel = Math.min(...sections.map(({ level }) => level));
+  const TOC = sections.map(section => makeListItem(section, topHeaderLevel)).join('\n');
+  return TOC;
 };
 
 const getCellByHref = href => {
@@ -63,6 +70,7 @@ const enableScrollToSection = () => {
     });
   });
 };
+
 
 const waitFor = (conditionFunc, funcToExecute) => {
   return () => {
