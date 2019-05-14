@@ -1,16 +1,12 @@
-chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
   const url = tabs[0].url;
-  const regex = /https:\/\/.*\.databricks.com\/#notebook\/.*/
+  const regex = /https:\/\/.*\.databricks.com\/#notebook\/.*/;
   if (url.match(regex)) {
-    chrome.tabs.sendMessage(
-      tabs[0].id,
-      'makeTOC',
-      text => {
-        copyToClipboard(text);
-      }
-    );
+    chrome.tabs.sendMessage(tabs[0].id, 'makeTOC', text => {
+      copyToClipboard(text);
+    });
   } else {
-    const message = document.getElementById('message')
+    const message = document.getElementById('message');
     message.textContent = 'This page is not a Databricks notebook';
     message.style.color = 'red';
   }
@@ -24,4 +20,4 @@ const copyToClipboard = text => {
   document.execCommand('copy');
   copyFrom.blur();
   document.body.removeChild(copyFrom);
-}
+};

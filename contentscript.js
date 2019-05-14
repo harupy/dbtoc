@@ -22,7 +22,7 @@ const getCellHref = cell => {
   return cell.querySelector('a.command-number').getAttribute('href');
 };
 
-const getSection = (mdCell) => {
+const parseHeader = (mdCell) => {
   const href = getCellHref(mdCell);
   const header = getHeaders(mdCell)[0];
   const level = getHeaderLevel(header.tagName);
@@ -42,9 +42,9 @@ const makeListItem = ({level, text, href}, topHeaderLevel) => {
 const makeTOC = () => {
   const cells = document.querySelectorAll('div.command-with-number');
   const mdCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c)).slice(1);
-  const sections = mdCells.map(getSection);
-  const topHeaderLevel = Math.min(...sections.map(({ level }) => level));
-  const TOC = sections.map(section => makeListItem(section, topHeaderLevel)).join('\n');
+  const headers = mdCells.map(parseHeader);
+  const topHeaderLevel = Math.min(...headers.map(({ level }) => level));
+  const TOC = headers.map(header => makeListItem(header, topHeaderLevel)).join('\n');
   return TOC;
 };
 
@@ -60,13 +60,13 @@ const enableScrollToSection = () => {
   if (!mdCellExists()) return
   const topMarkdownCell = document.querySelector('div.markdown');
   const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
-  sectionLinks.forEach(sectionLink => {
-    sectionLink.style.fontWeight = 'bold';
-    sectionLink.addEventListener('click', event => {
+  sectionLinks.forEach(sl => {
+    sl.style.fontWeight = 'bold';
+    sl.addEventListener('click', event => {
       event.preventDefault();
       const href = event.target.getAttribute('href');
-      const targetCell = getCellByHref(href);
-      targetCell.scrollIntoView();
+      const targetSection = getCellByHref(href);
+      targetSection.scrollIntoView();
     });
   });
 };
