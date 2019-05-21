@@ -22,7 +22,7 @@ const getCellHref = cell => {
   return cell.querySelector('a.command-number').getAttribute('href');
 };
 
-const parseHeader = (mdCell) => {
+const parseHeader = mdCell => {
   const href = getCellHref(mdCell);
   const header = getHeaders(mdCell)[0];
   const level = getHeaderLevel(header.tagName);
@@ -30,14 +30,14 @@ const parseHeader = (mdCell) => {
   return {
     level,
     text,
-    href
-  }
-}
+    href,
+  };
+};
 
-const makeListItem = ({level, text, href}, topHeaderLevel) => {
+const makeListItem = ({ level, text, href }, topHeaderLevel) => {
   const indent = '  '.repeat(level - topHeaderLevel);
-  return `${indent}- [${text}](${href})`
-}
+  return `${indent}- [${text}](${href})`;
+};
 
 const makeTOC = () => {
   const cells = document.querySelectorAll('div.command-with-number');
@@ -50,14 +50,14 @@ const makeTOC = () => {
 
 const getCellByHref = href => {
   return document.querySelectorAll(`a[href='${href}'].command-number`)[0];
-}
+};
 
 const mdCellExists = () => {
   return document.querySelector('div.markdown') !== null;
-}
+};
 
 const enableScrollToSection = () => {
-  if (!mdCellExists()) return
+  if (!mdCellExists()) return;
   const topMarkdownCell = document.querySelector('div.markdown');
   const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
   sectionLinks.forEach(sl => {
@@ -71,15 +71,14 @@ const enableScrollToSection = () => {
   });
 };
 
-
-const waitFor = (conditionFunc, funcToExecute) => {
+const waitFor = (conditionFunc, func) => {
   return () => {
     const callback = () => {
       if (conditionFunc()) {
         clearInterval(handle);
-        funcToExecute();
+        func();
       }
-    }
+    };
     const handle = setInterval(callback, 100);
   };
 };
@@ -89,4 +88,3 @@ document.addEventListener('mousedown', enableScrollToSection);
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   sendResponse(makeTOC());
 });
-
