@@ -14,3 +14,7 @@ A Chrome extension which creates a table of contents automatically on Databricks
 1. Enable "Developer mode"
 1. Click "Load unpacked"
 1. Select the cloned folder
+
+## License
+
+MIT
