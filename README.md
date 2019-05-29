@@ -2,7 +2,7 @@
 
 A Chrome extension which creates a table of contents automatically on Databricks notebooks.
 
-## Chrome Web Store
+## Installation
 
 [DBToc - Chrome Web Store](https://chrome.google.com/webstore/detail/dbtoc/jjhilakkioopdihinonnjohnhdmpfhgb)
 
