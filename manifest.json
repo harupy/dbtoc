@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "dbtoc",
-  "version": "1.0",
-  "description": "Make a table of contents",
+  "name": "DBToc",
+  "version": "0.1.1",
+  "description": "Create a table of contents automatically",
   "icons": {
     "48": "logo.png"
   },
