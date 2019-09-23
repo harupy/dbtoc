@@ -1,8 +1,6 @@
 # DBToc
 
-A Chrome extension which creates a table of contents automatically on Databricks notebooks.
-
-![demo.gif](https://user-images.githubusercontent.com/17039389/59233347-09f05480-8c23-11e9-9f53-ed88974eed31.gif)
+A Chrome extension to create a table of contents **automatically** on Databricks.
 
 ## Installation
 
@@ -10,16 +8,16 @@ A Chrome extension which creates a table of contents automatically on Databricks
 
 ## Customize
 
-1. Clone this repository (or Download ZIP)
-1. Edit the source code
-1. Open `chrome://extensions` on Chrome
-1. Enable `Developer mode`
-1. Click `Load unpacked`
-1. Select the extension directory
+1. Clone this repository (or Download ZIP).
+1. Edit the source code.
+1. Open `chrome://extensions` on Chrome.
+1. Enable `Developer mode`.
+1. Click `Load unpacked`.
+1. Select the extension directory.
 
 ## Acknowledgements
 
-A huge thanks to Databricks for making data science and machine learning easier to access for everyone.
+A huge thanks to Databricks for making big data simple.
 
 ## License
 
