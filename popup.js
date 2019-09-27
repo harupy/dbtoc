@@ -1,4 +1,4 @@
-chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+chrome.tabs.query({active: true, currentWindow: true}, tabs => {
   const url = tabs[0].url;
   const pattern = /https:\/\/.*\.databricks.com\/.*#notebook\/.*/;
   if (url.match(pattern)) {
@@ -8,7 +8,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
   } else {
     const message = document.getElementById('message');
     message.textContent = 'This page is not a Databricks notebook';
-    message.style.color = 'red';
+    message.style.color = '#ff6347';
   }
 });
 
