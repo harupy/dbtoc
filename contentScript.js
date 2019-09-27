@@ -61,7 +61,6 @@ const enableScrollToSection = () => {
   const topMarkdownCell = document.querySelector('div.markdown');
   const sectionLinks = topMarkdownCell.querySelectorAll("a[href^='#notebook']");
   sectionLinks.forEach(sl => {
-    sl.style.fontWeight = 'bold';
     sl.addEventListener('click', event => {
       event.preventDefault();
       const href = event.target.getAttribute('href');
