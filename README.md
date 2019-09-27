@@ -2,7 +2,7 @@
 
 A Chrome extension to create a table of contents **automatically** on Databricks.
 
-![demo](https://user-images.githubusercontent.com/17039389/65757287-cd088900-e151-11e9-9afc-db1ade047469.gif)
+<img src="https://user-images.githubusercontent.com/17039389/65757287-cd088900-e151-11e9-9afc-db1ade047469.gif" width="70%">
 
 ## Installation
 
