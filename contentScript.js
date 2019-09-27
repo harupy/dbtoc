@@ -34,16 +34,16 @@ const parseHeader = mdCell => {
   };
 };
 
-const makeListItem = ({ level, text, href }, topHeaderLevel) => {
+const makeListItem = ({level, text, href}, topHeaderLevel) => {
   const indent = '  '.repeat(level - topHeaderLevel);
   return `${indent}- [${text}](${href})`;
 };
 
 const makeTOC = () => {
   const cells = document.querySelectorAll('div.command-with-number');
-  const mdCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c)).slice(1);
+  const mdCells = [...cells].filter(c => isMarkdownCell(c) && hasHeader(c));
   const headers = mdCells.map(parseHeader);
-  const topHeaderLevel = Math.min(...headers.map(({ level }) => level));
+  const topHeaderLevel = Math.min(...headers.map(({level}) => level));
   const TOC = headers.map(header => makeListItem(header, topHeaderLevel)).join('\n');
   return TOC;
 };
