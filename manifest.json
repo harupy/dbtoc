@@ -13,7 +13,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.databricks.com/*"],
+      "matches": ["https://*.databricks.com/*", "https://*.azuredatabricks.net/*"],
       "js": ["contentScript.js"],
       "run_at": "document_idle"
     }

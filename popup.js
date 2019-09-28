@@ -1,7 +1,8 @@
 chrome.tabs.query({active: true, currentWindow: true}, tabs => {
   const url = tabs[0].url;
-  const pattern = /https:\/\/.*\.databricks.com\/.*#notebook\/.*/;
-  if (url.match(pattern)) {
+  const awsPattern = /https:\/\/.*\.databricks.com\/.*#notebook\/.*/;
+  const azurePattern = /https:\/\/.*\.azuredatabricks.net\/.*#notebook\/.*/;
+  if (url.match(awsPattern) || url.match(azurePattern)) {
     chrome.tabs.sendMessage(tabs[0].id, 'makeTOC', text => {
       copyToClipboard(text);
     });
